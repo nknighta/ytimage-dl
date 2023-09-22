@@ -1,8 +1,16 @@
 function extractVideoId(url) {
     const pattern = /watch\?v=([a-zA-Z0-9_-]+)/;
     const match = url.match(pattern);
+    const patterns = "https://youtu.be/([a-zA-Z0-9_-]+)";
+    const matchs = url.match(patterns);
+    const patternid = "([a-zA-Z0-9_-]+)";
+    const matchid = url.match(patternid);
     if (match && match[1]) {
         return match[1];
+    } else if (matchs && matchs[1]) {
+        return matchs[1];
+    } else if (matchid && matchid[1]) {
+        return matchid[1];
     }
     return null;
 }
