@@ -22,7 +22,10 @@ function extractVideoId(url) {
     const patternid = "https://www.youtube.com/shorts/([a-zA-Z0-9_-]+)";
     const matchid = url.match(patternid);
     // for shorts video url
-    
+
+    const pattern_live = "https://www.youtube.com/live/([a-zA-Z0-9_-]+)";
+    const match_live = url.match(pattern_live);
+
     const patternshort = "shorts/([a-zA-Z0-9_-]+)";
     const matchshort = url.match(patternshort);
     if (match && match[1]) {
@@ -33,13 +36,16 @@ function extractVideoId(url) {
         return matchid[1];
     } else if (matchshort && matchshort[1]) {
         return matchshort[1];
+    } else if (match_live && match_live[1]) {
+        return match_live[1];
     }
-    return null;
+    return "error";
 }
+
 
 function displayImage() {
     const getYtThumbnail = async (videoId) => {
-        // 画像をロードする処理
+        // load image
         const loadImage = (src) => {
             return new Promise((resolve, reject) => {
                 const img = new Image();
@@ -48,13 +54,17 @@ function displayImage() {
             });
         };
 
+        if (videoId === 'error') {
+            alert('URLが正しくありません。');
+            const imageContainer = document.getElementById('imageContainer');
+            imageContainer.innerHTML = ''; // 既存の画像をクリア
+        }
+
         for (let i = 0; i < THUMB_TYPES.length; i++) {
-            const fileName = `https://img.youtube.com/vi/${videoId}/${THUMB_TYPES[i]}`;
+            const fileName = `https://i.ytimg.com/vi/${videoId}/${THUMB_TYPES[i]}`;
 
             const res = await loadImage(fileName);
 
-            // ダミー画像じゃなかったら（横幅が121px以上だったら）
-            // もしくは、これ以上小さい解像度が無かった場合は、このURLで決定
             if (
                 !THUMB_TYPES[i + 1]
                 || (res).width > 120
@@ -79,6 +89,5 @@ function displayImage() {
         //img.innerHTML = "https://i.ytimg.com/vi/" + videoId + "/maxresdefault.jpg";
         img.innerHTML = `<a href="${highQuality}">thumbnail image</a>`;
         imageContainer.appendChild(img);
-        console.log(highQuality);
     })();
 }
