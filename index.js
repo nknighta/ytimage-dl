@@ -80,10 +80,9 @@ function displayImage() {
         const videoId = extractVideoId(imageUrl);
 
         const highQuality = await getYtThumbnail(videoId);
-        document.getElementById('highQuality').src = highQuality;
+        document.getElementById('prev').src = highQuality;
 
         const imageContainer = document.getElementById('imageContainer');
-        imageContainer.innerHTML = ''; // 既存の画像をクリア
 
         const img = document.createElement('div');
         //img.innerHTML = "https://i.ytimg.com/vi/" + videoId + "/maxresdefault.jpg";
