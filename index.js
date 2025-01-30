@@ -11,8 +11,10 @@ const THUMB_TYPES = [
     'default.jpg',
 ];
 
+
 function extractVideoId(url) {
     // for normal url
+    const param = location.search;
     const pattern = /watch\?v=([a-zA-Z0-9_-]+)/;
     const match = url.match(pattern);
     // for short url
@@ -38,6 +40,10 @@ function extractVideoId(url) {
         return matchshort[1];
     } else if (match_live && match_live[1]) {
         return match_live[1];
+    } else if (param) {
+        const url = param.split('=')[2];
+        const paramvideoid = url;
+        return paramvideoid
     }
     return "error";
 }
@@ -62,9 +68,7 @@ function displayImage() {
 
         for (let i = 0; i < THUMB_TYPES.length; i++) {
             const fileName = `https://i.ytimg.com/vi/${videoId}/${THUMB_TYPES[i]}`;
-
             const res = await loadImage(fileName);
-
             if (
                 !THUMB_TYPES[i + 1]
                 || (res).width > 120
@@ -76,6 +80,7 @@ function displayImage() {
 
     (async () => {
         // get vide id
+
         var imageUrl = document.getElementById('imageUrl').value;
         const videoId = extractVideoId(imageUrl);
 
