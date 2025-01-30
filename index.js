@@ -95,3 +95,11 @@ function displayImage() {
         imageContainer.appendChild(img);
     })();
 }
+
+window.onload = function () {
+    const params = new URLSearchParams(location.search);
+    if (params.get('url')) {
+        document.getElementById('imageUrl').value = params.get('url');
+        displayImage();
+    }
+};
